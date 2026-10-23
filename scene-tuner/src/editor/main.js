@@ -178,7 +178,9 @@ function askSlot(file) {
 
 // ---------------------------------------------------------------- frame / layout
 const frameSel = $('#frame');
-frameSel.value = localStorage.getItem('scene-tuner:frame') || '16:9';
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+frameSel.value = lsGet('scene-tuner:frame') || '16:9';
 function layout() {
   const box = $('#frame-box');
   const stage = $('#stage');
@@ -194,7 +196,7 @@ function layout() {
   box.style.width = `${Math.floor(w)}px`;
   box.style.height = `${Math.floor(h)}px`;
 }
-frameSel.addEventListener('change', () => { localStorage.setItem('scene-tuner:frame', frameSel.value); layout(); });
+frameSel.addEventListener('change', () => { lsSet('scene-tuner:frame', frameSel.value); layout(); });
 new ResizeObserver(layout).observe($('#stage'));
 layout();
 

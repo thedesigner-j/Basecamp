@@ -102,7 +102,7 @@ dialog::backdrop { background: #000a; }
 @media (max-width: 820px) {
   html, body { height: auto; }
   #app { display: block; height: auto; }
-  #stage-wrap { position: sticky; top: 0; z-index: 5; height: 46vh; background: var(--bg); box-shadow: 0 10px 30px #0008; }
+  #stage-wrap { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; height: 46vh; background: var(--bg); box-shadow: 0 10px 30px #0008; }
   #stage-bar { padding: 8px 12px; gap: 8px; }
   #stage { padding: 10px; }
   #panel { width: auto; border-left: 0; overflow: visible; padding: 14px 16px 40px; }
