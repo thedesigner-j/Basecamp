@@ -1,0 +1,20 @@
+{
+  "name": "scene-tuner",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Visual tuner for cursor-reveal WebGL effects (two renders, mouse reveals the second). Exports a drop-in embed for Webflow.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:runtime && npm run build:editor",
+    "build:runtime": "vite build --config vite.runtime.config.js",
+    "build:editor": "vite build --config vite.editor.config.js && node scripts/finish-build.mjs",
+    "test": "node test/smoke.mjs"
+  },
+  "devDependencies": {
+    "tweakpane": "4.0.5",
+    "vite": "6.3.5",
+    "vite-plugin-singlefile": "2.2.0",
+    "playwright-core": "1.52.0"
+  }
+}

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scene Tuner</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/src/editor/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <main id="stage-wrap">
+        <div id="stage-bar">
+          <div class="brand">Scene Tuner</div>
+          <label class="select">
+            <span>Frame</span>
+            <select id="frame">
+              <option value="fill">Fill</option>
+              <option value="16:9" selected>16 : 9</option>
+              <option value="21:9">21 : 9</option>
+              <option value="4:3">4 : 3</option>
+              <option value="1:1">1 : 1</option>
+              <option value="9:16">9 : 16 (phone)</option>
+            </select>
+          </label>
+          <span id="fps" class="muted"></span>
+          <button id="export-btn" class="btn primary">Export</button>
+        </div>
+        <div id="stage">
+          <div id="frame-box">
+            <div id="preview"></div>
+            <div id="hint">Move your cursor over the preview</div>
+          </div>
+          <div id="drop-overlay"><div>Drop renders here<br /><small>1 file: pick a slot · 2 files: top + bottom (alphabetical)</small></div></div>
+        </div>
+      </main>
+
+      <aside id="panel">
+        <section class="layers">
+          <h2>Layers</h2>
+          <div class="slot" data-slot="top">
+            <div class="slot-head">
+              <strong>Top</strong><span class="muted">shown by default</span>
+            </div>
+            <div class="slot-body">
+              <div class="thumb"></div>
+              <div class="slot-info">
+                <div class="name muted">Demo image</div>
+                <div class="row">
+                  <label class="btn small">Choose…<input type="file" accept="image/*,video/*" hidden /></label>
+                  <select class="crop" title="Which part of the file to use">
+                    <option value="full">Whole file</option>
+                    <option value="top-half">Top half</option>
+                    <option value="bottom-half">Bottom half</option>
+                    <option value="left-half">Left half</option>
+                    <option value="right-half">Right half</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slot" data-slot="bottom">
+            <div class="slot-head">
+              <strong>Bottom</strong><span class="muted">revealed by the cursor</span>
+            </div>
+            <div class="slot-body">
+              <div class="thumb"></div>
+              <div class="slot-info">
+                <div class="name muted">Demo image</div>
+                <div class="row">
+                  <label class="btn small">Choose…<input type="file" accept="image/*,video/*" hidden /></label>
+                  <select class="crop" title="Which part of the file to use">
+                    <option value="full">Whole file</option>
+                    <option value="top-half">Top half</option>
+                    <option value="bottom-half">Bottom half</option>
+                    <option value="left-half">Left half</option>
+                    <option value="right-half">Right half</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row wrap">
+            <label class="btn small">Packed video…<input id="packed-input" type="file" accept="video/*" hidden /></label>
+            <button id="swap" class="btn small ghost">Swap</button>
+            <button id="demo" class="btn small ghost">Demo</button>
+          </div>
+          <p class="tip muted">Packed video = both renders stacked in one file (top half / bottom half), so they never drift out of sync.</p>
+        </section>
+        <div id="pane"></div>
+      </aside>
+    </div>
+
+    <dialog id="export-dialog">
+      <form method="dialog" class="dialog-inner">
+        <header><h2>Export for Webflow</h2><button class="btn ghost small" value="close">Close</button></header>
+
+        <h3>1 · Where your files live</h3>
+        <p class="muted">Upload the renders somewhere public, then paste the links. Videos must allow cross-origin access (CORS), see the README.</p>
+        <label class="field"><span>Top URL</span><input id="url-top" type="url" placeholder="https://…/glass.mp4" /></label>
+        <label class="field"><span>Bottom URL</span><input id="url-bottom" type="url" placeholder="https://…/glow.mp4" /></label>
+        <label class="field"><span>Height</span><input id="ex-height" type="text" value="100vh" placeholder="100vh, 600px, or fill" /></label>
+        <p class="muted tip">Use <code>fill</code> to make it a background that fills its parent section (the section needs position: relative).</p>
+
+        <h3>2 · Script</h3>
+        <label class="radio"><input type="radio" name="script-mode" value="inline" checked /> Paste the script inline (nothing else to host)</label>
+        <label class="radio"><input type="radio" name="script-mode" value="url" /> Load it from a URL</label>
+        <label class="field" id="script-url-field" hidden><span>Script URL</span><input id="script-url" type="url" placeholder="https://cdn.jsdelivr.net/gh/USER/REPO@main/dist/scene-reveal.min.js" /></label>
+
+        <h3>3 · Paste into Webflow</h3>
+        <p class="muted"><b>A.</b> Add an <i>Embed</i> element where the effect goes and paste:</p>
+        <div class="code"><textarea id="code-embed" readonly rows="7"></textarea><button type="button" class="btn small copy" data-target="code-embed">Copy</button></div>
+        <p class="muted"><b>B.</b> Page settings → <i>Before &lt;/body&gt; tag</i>, paste:</p>
+        <div class="code"><textarea id="code-script" readonly rows="4"></textarea><button type="button" class="btn small copy" data-target="code-script">Copy</button></div>
+        <div class="row">
+          <button type="button" id="dl-config" class="btn small ghost">Download settings.json</button>
+          <button type="button" id="dl-runtime" class="btn small ghost">Download scene-reveal.min.js</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="/src/editor/main.js"></script>
+  </body>
+</html>
